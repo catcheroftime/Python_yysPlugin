@@ -28,6 +28,7 @@ img: ""
 
     # 鼠标点击(x,y)位置
     def mouseLeftClick(x,y):
+        moveCurPos(x,y)
         win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN | win32con.MOUSEEVENTF_LEFTUP,x,y)
 
 其实最后一个函数鼠标点击指定位置，基本已经可以完成脚本关于鼠标控制的功能了
@@ -167,17 +168,6 @@ img: ""
             window_capture()
             img = cv2.cv2.imread('./shotscreen/shot.png')
 
-            start_template = cv2.cv2.imread('./yys/start.png')
-            start_position = picMatch(start_template, img)
-            if start_position:
-                count += 1
-                mouseLeftClick(int(start_position[0][0]), int(start_position[0][1]) )
-                print("第{}次开始".format(count))
-                time.sleep(1)
-                mouseLeftClick(int(start_position[0][0]), int(start_position[0][1]) )
-                mouseLeftClick(int(start_position[0][0]), int(start_position[0][1]) )
-                time.sleep(15)
-
             failure_template = cv2.cv2.imread('./yys/failure.png')
             failure_position = picMatch(failure_template, img)
             if failure_position:
@@ -198,7 +188,29 @@ img: ""
                 mouseLeftClick(int(success_position[0][0]), int(success_position[0][1]) )
                 time.sleep(3)
 
+            start_template = cv2.cv2.imread('./yys/start.png')
+            start_position = picMatch(start_template, img)
+            if start_position:
+                count += 1
+                mouseLeftClick(int(start_position[0][0]), int(start_position[0][1]) )
+                print("第{}次开始".format(count))
+                time.sleep(1)
+                mouseLeftClick(int(start_position[0][0]), int(start_position[0][1]) )
+                mouseLeftClick(int(start_position[0][0]), int(start_position[0][1]) )
+                time.sleep(15)
+
             settlement_template = cv2.cv2.imread('./yys/settlement.png')
             settlement_position = picMatch(settlement_template, img)
             if settlement_position:
                 mouseLeftClick(int(settlement_position[0][0]), int(settlement_position[0][1]) )
+
+再回头看一下整体的流程
+
+- 先截图存放在 `shotscreen` 文件夹中
+- 需要被匹配的模板放在 `yys` 文件夹中
+
+这样设计的原因是如果匹配的图片模板有变，(比如一次活动更新，需要匹配的开始结束等图标变了)在程序外修改图片程序仍然能正常运行
+
+## 打包
+
+考虑到自己不可能每次都是通过 python 的代码去启动，最好是可以打包成一个 `*.exe`, 这样即使在没有 `python` 的电脑上仍然可以正常使用

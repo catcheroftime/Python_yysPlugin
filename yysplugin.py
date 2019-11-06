@@ -40,7 +40,7 @@ def mouseClickedMove(x,y,length,direct):
     elif direct==direction.RIGHT:
         x_move = 1
     elif direct==direction.LEFT:
-        x_move = -1
+        x_move = -1 
     else:
         print("move direction is error!")
 
@@ -95,17 +95,6 @@ if __name__=='__main__':
         window_capture()
         img = cv2.cv2.imread('./shotscreen/shot.png')
 
-        start_template = cv2.cv2.imread('./yys/start.png')
-        start_position = picMatch(start_template, img)
-        if start_position:
-            count += 1
-            mouseLeftClick(int(start_position[0][0]), int(start_position[0][1]) )
-            print("第{}次开始".format(count))
-            time.sleep(1)
-            mouseLeftClick(int(start_position[0][0]), int(start_position[0][1]) )
-            mouseLeftClick(int(start_position[0][0]), int(start_position[0][1]) )
-            time.sleep(15)
-
         failure_template = cv2.cv2.imread('./yys/failure.png')
         failure_position = picMatch(failure_template, img)
         if failure_position:
@@ -125,6 +114,17 @@ if __name__=='__main__':
             mouseLeftClick(int(success_position[0][0]), int(success_position[0][1]) )
             mouseLeftClick(int(success_position[0][0]), int(success_position[0][1]) )
             time.sleep(3)
+
+        start_template = cv2.cv2.imread('./yys/start.png')
+        start_position = picMatch(start_template, img)
+        if start_position:
+            count += 1
+            mouseLeftClick(int(start_position[0][0]), int(start_position[0][1]) )
+            print("第{}次开始".format(count))
+            time.sleep(1)
+            mouseLeftClick(int(start_position[0][0]), int(start_position[0][1]) )
+            mouseLeftClick(int(start_position[0][0]), int(start_position[0][1]) )
+            time.sleep(15)
 
         settlement_template = cv2.cv2.imread('./yys/settlement.png')
         settlement_position = picMatch(settlement_template, img)
