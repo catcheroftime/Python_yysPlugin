@@ -81,11 +81,19 @@ def window_capture():
     save_dc.SelectObject(capture)
     # 保存图片
     save_dc.BitBlt((0, 0), (width, height), img_dc, (0, 0), win32con.SRCCOPY)
-    capture.SaveBitmapFile(save_dc , './shotscreen/shot.png')
+    capture.SaveBitmapFile(save_dc , './yys/shot.png')
     # 释放内存
     save_dc.DeleteDC()
     win32gui.DeleteObject(capture.GetHandle())
     win32gui.ReleaseDC(desktop_h,desktop_dc)
+
+def clickPosition(positions, time=3):
+    for pos in positions:
+        i = 0
+        while i<time:
+            mouseLeftClick(int(pos[0]), int(pos[1]) )
+            i += 1
+
 
 if __name__=='__main__':
     count = 0
@@ -93,43 +101,48 @@ if __name__=='__main__':
     failure_time = 0
     while True:
         window_capture()
-        img = cv2.cv2.imread('./shotscreen/shot.png')
+        img = cv2.cv2.imread('./yys/shot.png')
+
+        ready_template = cv2.cv2.imread('./yys/ready.png')
+        ready_position = picMatch(ready_template, img)
+        if ready_position:
+            clickPosition(ready_position,1)
+            time.sleep(15)
+            continue
 
         failure_template = cv2.cv2.imread('./yys/failure.png')
         failure_position = picMatch(failure_template, img)
         if failure_position:
             failure_time += 1
-            mouseLeftClick(int(failure_position[0][0]), int(failure_position[0][1]) )
+            clickPosition(failure_position)
             print("第{}次挑战失败".format(failure_time))
-            mouseLeftClick(int(failure_position[0][0]), int(failure_position[0][1]) )
-            mouseLeftClick(int(failure_position[0][0]), int(failure_position[0][1]) )
-            time.sleep(3)
+            time.sleep(1)
+            continue
         
         success_template = cv2.cv2.imread('./yys/success.png')
         success_position = picMatch(success_template, img)
         if success_position:
             success_time += 1
-            mouseLeftClick(int(success_position[0][0]), int(success_position[0][1]) )
+            clickPosition(success_position)
             print("第{}次挑战成功".format(success_time))
-            mouseLeftClick(int(success_position[0][0]), int(success_position[0][1]) )
-            mouseLeftClick(int(success_position[0][0]), int(success_position[0][1]) )
-            time.sleep(3)
+            time.sleep(1)
+            continue
 
         start_template = cv2.cv2.imread('./yys/start.png')
         start_position = picMatch(start_template, img)
         if start_position:
             count += 1
-            mouseLeftClick(int(start_position[0][0]), int(start_position[0][1]) )
+            clickPosition(start_position)
             print("第{}次开始".format(count))
-            time.sleep(1)
-            mouseLeftClick(int(start_position[0][0]), int(start_position[0][1]) )
-            mouseLeftClick(int(start_position[0][0]), int(start_position[0][1]) )
-            time.sleep(15)
+            time.sleep(3)
+            continue
 
         settlement_template = cv2.cv2.imread('./yys/settlement.png')
         settlement_position = picMatch(settlement_template, img)
         if settlement_position:
-            mouseLeftClick(int(settlement_position[0][0]), int(settlement_position[0][1]) )
+            clickPosition(settlement_position)
+            time.sleep(1)
+            continue
 
 
 
