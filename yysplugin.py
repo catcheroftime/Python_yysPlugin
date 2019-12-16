@@ -103,19 +103,17 @@ if __name__=='__main__':
         window_capture()
         img = cv2.cv2.imread('./yys/shot.png')
 
-        ready_template = cv2.cv2.imread('./yys/ready.png')
-        ready_position = picMatch(ready_template, img)
-        if ready_position:
-            clickPosition(ready_position,1)
-            time.sleep(15)
-            continue
+        # ready_template = cv2.cv2.imread('./yys/ready.png')
+        # ready_position = picMatch(ready_template, img)
+        # if ready_position:
+        #     clickPosition(ready_position,1)
+        #     time.sleep(1)
+        #     continue
 
-        failure_template = cv2.cv2.imread('./yys/failure.png')
-        failure_position = picMatch(failure_template, img)
-        if failure_position:
-            failure_time += 1
-            clickPosition(failure_position)
-            print("第{}次挑战失败".format(failure_time))
+        settlement_template = cv2.cv2.imread('./yys/settlement.png')
+        settlement_position = picMatch(settlement_template, img)
+        if settlement_position:
+            clickPosition(settlement_position)
             time.sleep(1)
             continue
         
@@ -134,15 +132,17 @@ if __name__=='__main__':
             count += 1
             clickPosition(start_position)
             print("第{}次开始".format(count))
-            time.sleep(3)
+            time.sleep(15)
             continue
 
-        settlement_template = cv2.cv2.imread('./yys/settlement.png')
-        settlement_position = picMatch(settlement_template, img)
-        if settlement_position:
-            clickPosition(settlement_position)
-            time.sleep(1)
+        failure_template = cv2.cv2.imread('./yys/failure.png')
+        failure_position = picMatch(failure_template, img)
+        if failure_position:
+            failure_time += 1
+            clickPosition(failure_position)
+            print("第{}次挑战失败".format(failure_time))
             continue
+
 
 
 
